@@ -9,52 +9,41 @@ ETH_MONTH_LENGTHS = {
     13: 5  # Will be 6 in leap years
 }
 
+# Time constants
+HOURS_IN_DAY = 24
+MINUTES_IN_HOUR = 60
+ETH_HOURS_IN_KENTR = 4  # Ethiopian hours in one quarter day (kentr)
+ETH_HOURS_IN_KENTR = 6  # Ethiopian hours in one sixth day
+
 def is_valid_ethiopian_date(year, month, day):
-    """
-    Check if the given Ethiopian date is valid.
-    
-    Args:
-        year (int): Ethiopian year
-        month (int): Ethiopian month (1-13)
-        day (int): Ethiopian day
-        
-    Returns:
-        bool: True if date is valid, False otherwise
-    """
-    # Basic range checks
+    """Check if the given Ethiopian date is valid."""
     if month < 1 or month > MONTHS_IN_ETH_YEAR:
         return False
         
-    # Handle Pagume (13th month) separately
     if month == 13:
         max_days = 6 if is_ethiopian_leap_year(year) else 5
         if day < 1 or day > max_days:
             return False
     else:
-        # All other months have 30 days
         if day < 1 or day > DAYS_IN_ETH_MONTH:
             return False
             
     return True
 
 def is_ethiopian_leap_year(year):
-    """
-    Determine if the given Ethiopian year is a leap year.
-    Ethiopian leap years follow a simple rule: if the year divided by 4 has remainder 3.
-    """
+    """Determine if the given Ethiopian year is a leap year."""
     return year % 4 == 3
 
 def get_ethiopian_month_length(year, month):
-    """
-    Get the length of a given Ethiopian month in a specific year.
-    
-    Args:
-        year (int): Ethiopian year
-        month (int): Ethiopian month (1-13)
-        
-    Returns:
-        int: Number of days in the month
-    """
+    """Get the length of a given Ethiopian month in a specific year."""
     if month == 13:
         return 6 if is_ethiopian_leap_year(year) else 5
     return DAYS_IN_ETH_MONTH
+
+def is_valid_eth_time(hour, minute):
+    """Validate Ethiopian time."""
+    return 0 <= hour < HOURS_IN_DAY and 0 <= minute < MINUTES_IN_HOUR
+
+def is_valid_time(hour, minute):
+    """Validate standard 24-hour time."""
+    return 0 <= hour < HOURS_IN_DAY and 0 <= minute < MINUTES_IN_HOUR
