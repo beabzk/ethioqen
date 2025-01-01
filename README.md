@@ -1,10 +1,12 @@
 # ethioqen: Ethiopian Calendar, Time, and Unix Timestamp Conversion
 
+> ⚠️ **Warning**: This library is in very early stages of development and should not be used in production. Contributions are crucial to make this production-ready.
+
 [![PyPI version](https://badge.fury.io/py/ethioqen.svg)](https://badge.fury.io/py/ethioqen)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Build Status](https://github.com/beabzk/ethioqen/actions/workflows/main.yml/badge.svg)](https://github.com/beabzk/ethioqen/actions)
 
-`ethioqen` is a Python library that provides accurate and efficient conversions between the Ethiopian calendar, the Gregorian calendar, Ethiopian local time, standard 24-hour local time, and Unix timestamps (seconds since the Unix epoch).
+`ethioqen` is a Python library that provides accurate and efficient conversions between the Ethiopian calendar, the Gregorian calendar, Ethiopian local time (12-hour format), standard 24-hour local time, and Unix timestamps.
 
 ## Introduction
 
@@ -19,12 +21,12 @@ The Ethiopian calendar is a solar calendar used in Ethiopia and Eritrea. It diff
 
 **Ethiopian Local Time:**
 
-Ethiopian local time is traditionally counted from sunrise (around 6:00 AM in standard local time). This means there's roughly a 6-hour offset between Ethiopian local time and standard 24-hour time.
+Ethiopian time uses a 12-hour clock that starts counting from dawn (around 6:00 AM standard time). This creates a 6-hour offset between Ethiopian and standard time:
 
-**Example:**
-
-* 1:00 Ethiopian local time ≈ 7:00 AM standard local time
-* 12:00 Ethiopian local time (noon) ≈ 6:00 PM standard local time
+* 12:00 AM Ethiopian = 6:00 AM standard time
+* 1:00 AM Ethiopian = 7:00 AM standard time
+* 12:00 PM Ethiopian = 6:00 PM standard time
+* 6:00 PM Ethiopian = 12:00 AM standard time (next day)
 
 ## Installation
 
@@ -68,12 +70,14 @@ print(f"{std_hour:02d}:{std_minute:02d}")  # Output: 14:30
 from ethioqen.unix_time_conversion import ethiopian_to_unix, unix_to_ethiopian
 
 # Convert Ethiopian date/time to Unix timestamp (UTC)
-timestamp = ethiopian_to_unix(2016, 7, 6, 8, 30)
+# 1:30 PM Ethiopian time
+timestamp = ethiopian_to_unix(2016, 7, 6, eth_hour=1, minute=30, is_pm=True)
 print(timestamp)  # Output: Unix timestamp
 
 # Convert Unix timestamp to Ethiopian date/time (UTC)
-eth_year, eth_month, eth_day, hour, minute = unix_to_ethiopian(timestamp)
-print(f"{eth_year}-{eth_month}-{eth_day} {hour:02d}:{minute:02d}")  # Output: 2016-7-6 08:30
+eth_year, eth_month, eth_day, hour, minute, is_pm = unix_to_ethiopian(timestamp)
+print(f"{eth_year}-{eth_month}-{eth_day} {hour}:{minute:02d} {'PM' if is_pm else 'AM'}")  
+# Output: 2016-7-6 1:30 PM
 ```
 
 ### Timezone Support
@@ -82,12 +86,13 @@ print(f"{eth_year}-{eth_month}-{eth_day} {hour:02d}:{minute:02d}")  # Output: 20
 from ethioqen.unix_time_conversion import ethiopian_to_unix, unix_to_ethiopian
 
 # Convert with timezone offset (UTC+3 for Ethiopia)
-timestamp = ethiopian_to_unix(2016, 7, 6, 8, 30, tz_offset=3)
+# 8:30 AM Ethiopian time
+timestamp = ethiopian_to_unix(2016, 7, 6, eth_hour=8, minute=30, is_pm=False, tz_offset=3)
 print(timestamp)  # Output: Unix timestamp adjusted for UTC+3
 
 # Convert back with timezone offset
 eth_date = unix_to_ethiopian(timestamp, tz_offset=3)
-print(f"{eth_date[0]}-{eth_date[1]}-{eth_date[2]} {eth_date[3]:02d}:{eth_date[4]:02d}")  
+print(f"{eth_date[0]}-{eth_date[1]}-{eth_date[2]} {eth_date[3]}:{eth_date[4]:02d} {'PM' if eth_date[5] else 'AM'}")  
 # Output: Ethiopian date/time in UTC+3
 ```
 
