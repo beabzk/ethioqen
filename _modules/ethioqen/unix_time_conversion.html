@@ -1,0 +1,215 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ethioqen.unix_time_conversion &mdash; ethioqen 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=01f34227"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ethioqen
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../calendar_conversion.html">Calendar Conversion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../time_conversion.html">Time Conversion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unix_time_conversion.html">Unix Time Conversion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils.html">Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exceptions.html">Exceptions</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ethioqen</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">ethioqen.unix_time_conversion</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for ethioqen.unix_time_conversion</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timezone</span><span class="p">,</span> <span class="n">timedelta</span>
+<span class="kn">from</span> <span class="nn">.calendar_conversion</span> <span class="kn">import</span> <span class="n">convert_ethiopian_to_gregorian</span><span class="p">,</span> <span class="n">convert_gregorian_to_ethiopian</span>
+<span class="kn">from</span> <span class="nn">.exceptions</span> <span class="kn">import</span> <span class="n">InvalidDateException</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">is_valid_ethiopian_date</span>
+
+<span class="k">def</span> <span class="nf">_convert_ethiopian_to_24h</span><span class="p">(</span><span class="n">hour</span><span class="p">,</span> <span class="n">is_pm</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert Ethiopian 12-hour time to 24-hour format.</span>
+<span class="sd">    </span>
+<span class="sd">    In Ethiopian time:</span>
+<span class="sd">    - Day starts at 12:00 AM (6:00 AM standard)</span>
+<span class="sd">    - 1:00 AM = 7:00 AM standard = 7 in 24h</span>
+<span class="sd">    - 12:00 PM = 6:00 PM standard = 18 in 24h</span>
+<span class="sd">    - 1:00 PM = 7:00 PM standard = 19 in 24h</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">hour</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">hour</span> <span class="o">&gt;</span> <span class="mi">12</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">InvalidDateException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid Ethiopian hour: </span><span class="si">{</span><span class="n">hour</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        
+    <span class="k">if</span> <span class="n">hour</span> <span class="o">==</span> <span class="mi">12</span><span class="p">:</span>
+        <span class="n">hour</span> <span class="o">=</span> <span class="mi">0</span>
+        
+    <span class="k">if</span> <span class="n">is_pm</span><span class="p">:</span>
+        <span class="n">hour</span> <span class="o">+=</span> <span class="mi">12</span>
+        
+    <span class="c1"># Add 6 hours to align with standard time</span>
+    <span class="n">hour</span> <span class="o">=</span> <span class="p">(</span><span class="n">hour</span> <span class="o">+</span> <span class="mi">6</span><span class="p">)</span> <span class="o">%</span> <span class="mi">24</span>
+    <span class="k">return</span> <span class="n">hour</span>
+
+<span class="k">def</span> <span class="nf">_convert_24h_to_ethiopian</span><span class="p">(</span><span class="n">hour</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert 24-hour time to Ethiopian 12-hour format.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        tuple: (hour in 1-12 format, is_pm boolean)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Subtract 6 hours to align with Ethiopian time</span>
+    <span class="n">eth_hour</span> <span class="o">=</span> <span class="p">(</span><span class="n">hour</span> <span class="o">-</span> <span class="mi">6</span><span class="p">)</span> <span class="o">%</span> <span class="mi">24</span>
+    
+    <span class="c1"># Convert to 12-hour format</span>
+    <span class="n">is_pm</span> <span class="o">=</span> <span class="n">eth_hour</span> <span class="o">&gt;=</span> <span class="mi">12</span>
+    <span class="k">if</span> <span class="n">is_pm</span><span class="p">:</span>
+        <span class="n">eth_hour</span> <span class="o">-=</span> <span class="mi">12</span>
+    
+    <span class="k">if</span> <span class="n">eth_hour</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">eth_hour</span> <span class="o">=</span> <span class="mi">12</span>
+        
+    <span class="k">return</span> <span class="n">eth_hour</span><span class="p">,</span> <span class="n">is_pm</span>
+
+<div class="viewcode-block" id="ethiopian_to_unix">
+<a class="viewcode-back" href="../../unix_time_conversion.html#ethioqen.unix_time_conversion.ethiopian_to_unix">[docs]</a>
+<span class="k">def</span> <span class="nf">ethiopian_to_unix</span><span class="p">(</span><span class="n">e_year</span><span class="p">,</span> <span class="n">e_month</span><span class="p">,</span> <span class="n">e_day</span><span class="p">,</span> <span class="n">eth_hour</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">minute</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">is_pm</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">tz_offset</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert Ethiopian date/time to Unix timestamp.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        e_year (int): Ethiopian year</span>
+<span class="sd">        e_month (int): Ethiopian month (1-13)</span>
+<span class="sd">        e_day (int): Ethiopian day</span>
+<span class="sd">        eth_hour (int, optional): Hour in Ethiopian 12-hour time (1-12). Defaults to 12.</span>
+<span class="sd">        minute (int, optional): Minutes (0-59). Defaults to 0.</span>
+<span class="sd">        is_pm (bool, optional): Whether the time is PM. Defaults to False.</span>
+<span class="sd">        tz_offset (int, optional): Timezone offset in hours. Defaults to 0 (UTC).</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        int: Unix timestamp (seconds since Unix epoch)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_valid_ethiopian_date</span><span class="p">(</span><span class="n">e_year</span><span class="p">,</span> <span class="n">e_month</span><span class="p">,</span> <span class="n">e_day</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">InvalidDateException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid Ethiopian date: </span><span class="si">{</span><span class="n">e_year</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">e_month</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">e_day</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">minute</span> <span class="o">&lt;=</span> <span class="mi">59</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">InvalidDateException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid minute: </span><span class="si">{</span><span class="n">minute</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    
+    <span class="c1"># Convert Ethiopian 12-hour time to 24-hour time</span>
+    <span class="n">hour_24</span> <span class="o">=</span> <span class="n">_convert_ethiopian_to_24h</span><span class="p">(</span><span class="n">eth_hour</span><span class="p">,</span> <span class="n">is_pm</span><span class="p">)</span>
+    
+    <span class="c1"># Convert to Gregorian and create timestamp</span>
+    <span class="n">g_year</span><span class="p">,</span> <span class="n">g_month</span><span class="p">,</span> <span class="n">g_day</span> <span class="o">=</span> <span class="n">convert_ethiopian_to_gregorian</span><span class="p">(</span><span class="n">e_year</span><span class="p">,</span> <span class="n">e_month</span><span class="p">,</span> <span class="n">e_day</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="n">g_year</span><span class="p">,</span> <span class="n">g_month</span><span class="p">,</span> <span class="n">g_day</span><span class="p">,</span> <span class="n">hour_24</span><span class="p">,</span> <span class="n">minute</span><span class="p">,</span> 
+                     <span class="n">tzinfo</span><span class="o">=</span><span class="n">timezone</span><span class="p">(</span><span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="n">tz_offset</span><span class="p">)))</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">timestamp</span><span class="p">())</span>
+    <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">InvalidDateException</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="unix_to_ethiopian">
+<a class="viewcode-back" href="../../unix_time_conversion.html#ethioqen.unix_time_conversion.unix_to_ethiopian">[docs]</a>
+<span class="k">def</span> <span class="nf">unix_to_ethiopian</span><span class="p">(</span><span class="n">timestamp</span><span class="p">,</span> <span class="n">tz_offset</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert Unix timestamp to Ethiopian date/time.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        timestamp (int): Unix timestamp (seconds since Unix epoch)</span>
+<span class="sd">        tz_offset (int, optional): Timezone offset in hours. Defaults to 0 (UTC).</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        tuple: (year, month, day, hour, minute, is_pm)</span>
+<span class="sd">            hour will be in 12-hour format (1-12)</span>
+<span class="sd">            is_pm indicates whether the time is PM</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">timestamp</span><span class="p">,</span> 
+                                  <span class="n">tz</span><span class="o">=</span><span class="n">timezone</span><span class="p">(</span><span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="n">tz_offset</span><span class="p">)))</span>
+    <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="ne">OSError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">InvalidDateException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid timestamp: </span><span class="si">{</span><span class="n">timestamp</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    
+    <span class="c1"># Convert to Ethiopian date</span>
+    <span class="n">e_year</span><span class="p">,</span> <span class="n">e_month</span><span class="p">,</span> <span class="n">e_day</span> <span class="o">=</span> <span class="n">convert_gregorian_to_ethiopian</span><span class="p">(</span>
+        <span class="n">dt</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">dt</span><span class="o">.</span><span class="n">month</span><span class="p">,</span> <span class="n">dt</span><span class="o">.</span><span class="n">day</span><span class="p">)</span>
+    
+    <span class="c1"># Convert 24-hour time to Ethiopian 12-hour time</span>
+    <span class="n">eth_hour</span><span class="p">,</span> <span class="n">is_pm</span> <span class="o">=</span> <span class="n">_convert_24h_to_ethiopian</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">hour</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">e_year</span><span class="p">,</span> <span class="n">e_month</span><span class="p">,</span> <span class="n">e_day</span><span class="p">,</span> <span class="n">eth_hour</span><span class="p">,</span> <span class="n">dt</span><span class="o">.</span><span class="n">minute</span><span class="p">,</span> <span class="n">is_pm</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Beabfekad Zikie.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
