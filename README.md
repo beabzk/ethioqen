@@ -4,7 +4,7 @@
 
 [![PyPI version](https://badge.fury.io/py/ethioqen.svg)](https://badge.fury.io/py/ethioqen)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Build Status](https://github.com/beabzk/ethioqen/actions/workflows/main.yml/badge.svg)](https://github.com/beabzk/ethioqen/actions)
+[![Upload Python Package](https://github.com/beabzk/ethioqen/actions/workflows/publish.yml/badge.svg?event=release)](https://github.com/beabzk/ethioqen/actions/workflows/publish.yml)
 
 `ethioqen` is a Python library that provides accurate and efficient conversions between the Ethiopian calendar, the Gregorian calendar, Ethiopian local time (12-hour format), standard 24-hour local time, and Unix timestamps.
 
