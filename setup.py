@@ -6,7 +6,7 @@ long_description = (here / "README.md").read_text(encoding="utf-8")
 
 setup(
     name="ethioqen",
-    version="0.1.0",
+    version="0.2.0",
     author="Beabfekad Zikie",
     author_email="beabzk@proton.me",
     description="A package for Ethiopian date and time conversions",
