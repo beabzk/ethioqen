@@ -73,6 +73,9 @@ addopts = "--cov=ethioqen --cov-report=term-missing"
 current_version = "0.2.2"
 commit = true
 tag = true
+# Keep uv.lock inside the bump commit: refresh the editable-package
+# version (and any upstream marker fixes) and stage it before commit.
+pre_commit_hooks = ["uv lock", "git add uv.lock"]
 
 [[tool.bumpversion.files]]
 filename = "pyproject.toml"
