@@ -1,6 +1,6 @@
 [build-system]
-requires = ["setuptools>=61.0.0", "wheel"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
 
 [project]
 name = "ethioqen"
@@ -8,6 +8,7 @@ version = "0.2.1"
 description = "A package for Ethiopian date and time conversions"
 readme = "README.md"
 requires-python = ">=3.10"
+dependencies = []
 license = {text = "MIT"}
 authors = [
     {name = "Beabfekad Zikie", email = "beabzk@proton.me"}
