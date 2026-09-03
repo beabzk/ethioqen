@@ -3,9 +3,15 @@ import sys
 sys.path.insert(0, os.path.abspath('..'))
 
 project = 'ethioqen'
-copyright = '2024, Beabfekad Zikie'
+copyright = '2024-2026, Beabfekad Zikie'
 author = 'Beabfekad Zikie'
-release = '0.1.0'
+try:
+    from importlib.metadata import version as _pkg_version
+    release = _pkg_version('ethioqen')
+except Exception:
+    import tomllib
+    with open(os.path.join(os.path.dirname(__file__), '..', 'pyproject.toml'), 'rb') as f:
+        release = tomllib.load(f)['project']['version']
 
 extensions = [
     'sphinx.ext.autodoc',
