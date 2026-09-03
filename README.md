@@ -34,6 +34,14 @@ Ethiopian time uses a 12-hour clock that starts counting from dawn (around 6:00 
 pip install ethioqen
 ```
 
+## Development Setup
+
+Requires Python 3.10+ and [uv](https://docs.astral.sh/uv/).
+
+```bash
+uv sync --all-groups
+```
+
 ## Usage Examples
 
 ### Calendar Conversions
@@ -123,14 +131,14 @@ We welcome contributions! Here's how you can help:
    * Submit a pull request
 
 3. **Coding Style**
-   * Follow PEP 8 guidelines
-   * Include docstrings for new functions/classes
-   * Add type hints where possible
+    * Follow PEP 8 guidelines (enforced with `ruff`: `uv run ruff check .` and `uv run ruff format --check .`)
+    * Include docstrings for new functions/classes
+    * Add type hints where possible
 
 4. **Testing**
-   * Run the test suite: `pytest`
-   * Add tests for new features
-   * Ensure all tests pass before submitting
+    * Run the test suite: `uv run pytest`
+    * Add tests for new features
+    * Ensure all tests pass before submitting (`uv run ruff check . && uv run ruff format --check . && uv run pytest`)
 
 ## License
 

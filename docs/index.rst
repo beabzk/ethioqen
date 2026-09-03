@@ -54,7 +54,7 @@ Unix Time Conversion
 
    from ethioqen.unix_time_conversion import ethiopian_to_unix
 
-   timestamp = ethiopian_to_unix(2016, 7, 6, 8, 30, tz_offset=3)
+   timestamp = ethiopian_to_unix(2016, 7, 6, eth_hour=8, minute=30, tz_offset=3)
    print(timestamp)  # Unix timestamp for Ethiopian date/time
 
 Indices and tables
