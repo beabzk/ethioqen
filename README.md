@@ -39,7 +39,10 @@ pip install ethioqen
 ### Calendar Conversions
 
 ```python
-from ethioqen.calendar_conversion import convert_ethiopian_to_gregorian, convert_gregorian_to_ethiopian
+from ethioqen.calendar_conversion import (
+    convert_ethiopian_to_gregorian,
+    convert_gregorian_to_ethiopian,
+)
 
 # Convert from Ethiopian to Gregorian
 greg_year, greg_month, greg_day = convert_ethiopian_to_gregorian(2016, 7, 6)
@@ -53,7 +56,10 @@ print(f"{eth_year}-{eth_month}-{eth_day}")  # Output: 2016-7-6
 ### Time Conversions
 
 ```python
-from ethioqen.time_conversion import convert_to_ethiopian_time, convert_from_ethiopian_time
+from ethioqen.time_conversion import (
+    convert_to_ethiopian_time,
+    convert_from_ethiopian_time,
+)
 
 # Convert standard time (14:30 / 2:30 PM) to Ethiopian time
 eth_hour, eth_minute, is_day = convert_to_ethiopian_time(14, 30)
@@ -76,7 +82,7 @@ print(timestamp)  # Output: Unix timestamp
 
 # Convert Unix timestamp to Ethiopian date/time (UTC)
 eth_year, eth_month, eth_day, hour, minute, is_pm = unix_to_ethiopian(timestamp)
-print(f"{eth_year}-{eth_month}-{eth_day} {hour}:{minute:02d} {'PM' if is_pm else 'AM'}")  
+print(f"{eth_year}-{eth_month}-{eth_day} {hour}:{minute:02d} {'PM' if is_pm else 'AM'}")
 # Output: 2016-7-6 1:30 PM
 ```
 
@@ -87,12 +93,16 @@ from ethioqen.unix_time_conversion import ethiopian_to_unix, unix_to_ethiopian
 
 # Convert with timezone offset (UTC+3 for Ethiopia)
 # 8:30 AM Ethiopian time
-timestamp = ethiopian_to_unix(2016, 7, 6, eth_hour=8, minute=30, is_pm=False, tz_offset=3)
+timestamp = ethiopian_to_unix(
+    2016, 7, 6, eth_hour=8, minute=30, is_pm=False, tz_offset=3
+)
 print(timestamp)  # Output: Unix timestamp adjusted for UTC+3
 
 # Convert back with timezone offset
 eth_date = unix_to_ethiopian(timestamp, tz_offset=3)
-print(f"{eth_date[0]}-{eth_date[1]}-{eth_date[2]} {eth_date[3]}:{eth_date[4]:02d} {'PM' if eth_date[5] else 'AM'}")  
+print(
+    f"{eth_date[0]}-{eth_date[1]}-{eth_date[2]} {eth_date[3]}:{eth_date[4]:02d} {'PM' if eth_date[5] else 'AM'}"
+)
 # Output: Ethiopian date/time in UTC+3
 ```
 
