@@ -31,3 +31,18 @@ classifiers=[
 [project.urls]
 "Bug Reports" = "https://github.com/beabzk/ethioqen/issues"
 "Source" = "https://github.com/beabzk/ethioqen"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1",
+    "pytest-cov>=7.1",
+    "ruff>=0.16",
+    "bump-my-version>=0.31",
+]
+docs = [
+    "sphinx>=8",
+    "sphinx-rtd-theme>=3",
+]
+
+[tool.uv]
+required-version = ">=0.8"
