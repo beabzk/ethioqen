@@ -5,6 +5,8 @@ Semantic Versioning: breaking changes ship as minor releases, fixes as patches.
 
 ## [Unreleased]
 
+## [0.3.1] - 2026-09-04
+
 ## [0.3.0] - 2026-09-04
 
 ### Breaking
