@@ -138,3 +138,13 @@ def test_24h_sweep_round_trip():
         eth_hour, minute, is_pm = convert_to_ethiopian_time(hour, 0)
         assert minute == 0
         assert convert_from_ethiopian_time(eth_hour, minute, is_pm) == (hour, 0)
+
+
+def test_minutes_sweep_round_trip():
+    """Round-trips hold across representative minute values too."""
+    for hour in (0, 5, 6, 11, 12, 17, 18, 23):
+        for minute in (0, 1, 15, 30, 45, 59):
+            eth_hour, eth_minute, is_pm = convert_to_ethiopian_time(hour, minute)
+            assert eth_minute == minute
+            back = convert_from_ethiopian_time(eth_hour, eth_minute, is_pm)
+            assert back == (hour, minute), f"failed on {(hour, minute)}"

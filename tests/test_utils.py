@@ -49,6 +49,8 @@ def test_ethiopian_date_rejects_non_ints():
     assert is_valid_ethiopian_date(2015, "1", 1) is False
     assert is_valid_ethiopian_date(2015, 1, "1") is False
     assert is_valid_ethiopian_date(2015.5, 1, 1) is False
+    assert is_valid_ethiopian_date(True, 1, 1) is False
+    assert is_valid_ethiopian_date(2015, 1, None) is False
 
 
 def test_valid_gregorian_dates():

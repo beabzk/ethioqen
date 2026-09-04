@@ -89,7 +89,7 @@ timestamp = ethiopian_to_unix(2016, 7, 6, eth_hour=1, minute=30, is_pm=True)
 print(timestamp)  # Output: Unix timestamp
 
 # Convert Unix timestamp to Ethiopian date/time (UTC)
-eth_year, eth_month, eth_day, hour, minute, is_pm = unix_to_ethiopian(timestamp)
+eth_year, eth_month, eth_day, hour, minute, second, is_pm = unix_to_ethiopian(timestamp)
 print(f"{eth_year}-{eth_month}-{eth_day} {hour}:{minute:02d} {'PM' if is_pm else 'AM'}")
 # Output: 2016-7-6 1:30 PM
 ```
@@ -109,7 +109,7 @@ print(timestamp)  # Output: Unix timestamp adjusted for UTC+3
 # Convert back with timezone offset
 eth_date = unix_to_ethiopian(timestamp, tz_offset=3)
 print(
-    f"{eth_date[0]}-{eth_date[1]}-{eth_date[2]} {eth_date[3]}:{eth_date[4]:02d} {'PM' if eth_date[5] else 'AM'}"
+    f"{eth_date[0]}-{eth_date[1]}-{eth_date[2]} {eth_date[3]}:{eth_date[4]:02d} {'PM' if eth_date[6] else 'AM'}"
 )
 # Output: Ethiopian date/time in UTC+3
 ```

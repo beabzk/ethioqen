@@ -67,7 +67,7 @@ known-first-party = ["ethioqen", "tests"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "--cov=ethioqen --cov-report=term-missing"
+addopts = "--cov=ethioqen --cov-report=term-missing --cov-fail-under=90"
 
 [tool.bumpversion]
 current_version = "0.2.2"
