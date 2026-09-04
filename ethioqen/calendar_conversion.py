@@ -39,7 +39,7 @@ def _year_start_days(year: int) -> int:
     return year * 365 + year // 4
 
 
-def _jdn_to_ethiopian(jdn: int) -> tuple:
+def _jdn_to_ethiopian(jdn: int) -> tuple[int, int, int]:
     """Convert Julian Day Number to Ethiopian date (integer math only).
 
     Inverts _ethiopian_to_jdn exactly: finds the year whose
@@ -77,7 +77,7 @@ def _gregorian_to_jdn(year: int, month: int, day: int) -> int:
     return jdn
 
 
-def _jdn_to_gregorian(jdn: int) -> tuple:
+def _jdn_to_gregorian(jdn: int) -> tuple[int, int, int]:
     """Convert Julian Day Number to Gregorian date."""
     y = 4716
     j = 1401
@@ -106,7 +106,7 @@ def _jdn_to_gregorian(jdn: int) -> tuple:
 
 def convert_ethiopian_to_gregorian(
     eth_year: int, eth_month: int, eth_day: int
-) -> tuple:
+) -> tuple[int, int, int]:
     """Convert an Ethiopian date to Gregorian.
 
     Args:
@@ -135,7 +135,7 @@ def convert_ethiopian_to_gregorian(
 
 def convert_gregorian_to_ethiopian(
     greg_year: int, greg_month: int, greg_day: int
-) -> tuple:
+) -> tuple[int, int, int]:
     """Convert a Gregorian date to Ethiopian.
 
     Args:

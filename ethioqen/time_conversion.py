@@ -34,7 +34,7 @@ def eth_to_24h(eth_hour: int, is_pm: bool) -> int:
     return (hour_24 + 6) % 24
 
 
-def h24_to_eth(hour_24: int) -> tuple:
+def h24_to_eth(hour_24: int) -> tuple[int, bool]:
     """Convert 24-hour standard time to Ethiopian 12-hour time.
 
     Args:
@@ -60,7 +60,7 @@ def h24_to_eth(hour_24: int) -> tuple:
 
 def convert_to_ethiopian_time(
     hour: int, minute: int, period: str | None = None
-) -> tuple:
+) -> tuple[int, int, bool]:
     """Convert standard time to Ethiopian time.
 
     Args:
@@ -102,7 +102,7 @@ def convert_to_ethiopian_time(
 
 def convert_from_ethiopian_time(
     eth_hour: int, minute: int, is_pm: bool = False
-) -> tuple:
+) -> tuple[int, int]:
     """Convert Ethiopian time to 24-hour standard time.
 
     Args:

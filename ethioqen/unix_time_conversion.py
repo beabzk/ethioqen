@@ -77,7 +77,9 @@ def ethiopian_to_unix(
         raise InvalidDateException(str(e)) from e
 
 
-def unix_to_ethiopian(timestamp: int | float, tz_offset: float = 0) -> tuple:
+def unix_to_ethiopian(
+    timestamp: int | float, tz_offset: float = 0
+) -> tuple[int, int, int, int, int, int, bool]:
     """Convert Unix timestamp to Ethiopian date/time.
 
     Args:
