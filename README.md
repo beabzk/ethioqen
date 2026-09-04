@@ -1,6 +1,8 @@
 # ethioqen: Ethiopian Calendar, Time, and Unix Timestamp Conversion
 
-> ⚠️ **Warning**: This library is in very early stages of development and should not be used in production. Contributions are crucial to make this production-ready.
+> **Beta**: the API is usable but still evolving. Expect
+> breaking changes in minor releases. See [CHANGELOG](CHANGELOG.md) and the
+> [migration guide](docs/migration.rst) when upgrading.
 
 [![PyPI version](https://badge.fury.io/py/ethioqen.svg)](https://badge.fury.io/py/ethioqen)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -8,25 +10,27 @@
 
 `ethioqen` is a Python library that provides accurate and efficient conversions between the Ethiopian calendar, the Gregorian calendar, Ethiopian local time (12-hour format), standard 24-hour local time, and Unix timestamps.
 
+Supports Python 3.10–3.14. See [CHANGELOG](CHANGELOG.md) for release notes.
+
 ## Introduction
 
 The Ethiopian calendar is a solar calendar used in Ethiopia and Eritrea. It differs significantly from the Gregorian calendar, which is the most widely used calendar system today.
 
 **Key Differences:**
 
-* **Year Offset:** The Ethiopian calendar is typically 7-8 years behind the Gregorian calendar.
-* **Months:** It has 13 months: 12 months of 30 days each and a 13th month called *Pagume*, which has 5 days (6 days in a leap year).
-* **New Year:** The Ethiopian New Year (*Enkutatash*) falls on September 11th (or 12th in a Gregorian leap year).
-* **Leap Years:** Ethiopia follows a simple 4-year leap year cycle without the century exception found in the Gregorian calendar.
+- **Year Offset:** The Ethiopian calendar is typically 7-8 years behind the Gregorian calendar.
+- **Months:** It has 13 months: 12 months of 30 days each and a 13th month called _Pagume_, which has 5 days (6 days in a leap year).
+- **New Year:** The Ethiopian New Year (_Enkutatash_) falls on September 11th (or 12th in a Gregorian leap year).
+- **Leap Years:** Ethiopia follows a simple 4-year leap year cycle without the century exception found in the Gregorian calendar.
 
 **Ethiopian Local Time:**
 
 Ethiopian time uses a 12-hour clock that starts counting from dawn (around 6:00 AM standard time). This creates a 6-hour offset between Ethiopian and standard time:
 
-* 12:00 AM Ethiopian = 6:00 AM standard time
-* 1:00 AM Ethiopian = 7:00 AM standard time
-* 12:00 PM Ethiopian = 6:00 PM standard time
-* 6:00 PM Ethiopian = 12:00 AM standard time (next day)
+- 12:00 AM Ethiopian = 6:00 AM standard time
+- 1:00 AM Ethiopian = 7:00 AM standard time
+- 12:00 PM Ethiopian = 6:00 PM standard time
+- 6:00 PM Ethiopian = 12:00 AM standard time (next day)
 
 ## Installation
 
@@ -119,26 +123,26 @@ print(
 We welcome contributions! Here's how you can help:
 
 1. **Report Bugs**
-   * Open an issue in the [GitHub issue tracker](https://github.com/beabzk/ethioqen/issues)
-   * Include a clear description and steps to reproduce
+   - Open an issue in the [GitHub issue tracker](https://github.com/beabzk/ethioqen/issues)
+   - Include a clear description and steps to reproduce
 
 2. **Submit Pull Requests**
-   * Fork the repository
-   * Create a new branch for your feature (`git checkout -b feature/amazing-feature`)
-   * Make your changes
-   * Write or update tests as needed
-   * Update documentation if necessary
-   * Submit a pull request
+   - Fork the repository
+   - Create a new branch for your feature (`git checkout -b feature/amazing-feature`)
+   - Make your changes
+   - Write or update tests as needed
+   - Update documentation if necessary
+   - Submit a pull request
 
 3. **Coding Style**
-    * Follow PEP 8 guidelines (enforced with `ruff`: `uv run ruff check .` and `uv run ruff format --check .`)
-    * Include docstrings for new functions/classes
-    * Add type hints where possible
+   - Follow PEP 8 guidelines (enforced with `ruff`: `uv run ruff check .` and `uv run ruff format --check .`)
+   - Include docstrings for new functions/classes
+   - Add type hints where possible
 
 4. **Testing**
-    * Run the test suite: `uv run pytest`
-    * Add tests for new features
-    * Ensure all tests pass before submitting (`uv run ruff check . && uv run ruff format --check . && uv run pytest`)
+   - Run the test suite: `uv run pytest`
+   - Add tests for new features
+   - Ensure all tests pass before submitting (`uv run ruff check . && uv run ruff format --check . && uv run pytest`)
 
 ## License
 

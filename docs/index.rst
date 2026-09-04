@@ -10,6 +10,7 @@ Welcome to ethioqen's documentation
    unix_time_conversion
    utils
    exceptions
+   migration
 
 Ethiopian Calendar and Time Conversion
 ===================================
