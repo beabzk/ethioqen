@@ -1,9 +1,12 @@
 from .exceptions import InvalidDateException
-from .utils import is_valid_ethiopian_date
+from .utils import is_ethiopian_leap_year, is_valid_ethiopian_date
 
-
-def is_ethiopian_leap_year(year):
-    return year % 4 == 3
+__all__ = [
+    "is_ethiopian_leap_year",
+    "is_gregorian_leap_year",
+    "convert_ethiopian_to_gregorian",
+    "convert_gregorian_to_ethiopian",
+]
 
 
 def is_gregorian_leap_year(year):
