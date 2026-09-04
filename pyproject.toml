@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "ethioqen"
-version = "0.2.2"
+version = "0.3.0"
 description = "A package for Ethiopian date and time conversions"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -70,7 +70,7 @@ testpaths = ["tests"]
 addopts = "--cov=ethioqen --cov-report=term-missing --cov-fail-under=90"
 
 [tool.bumpversion]
-current_version = "0.2.2"
+current_version = "0.3.0"
 commit = true
 tag = true
 # Keep uv.lock inside the bump commit: refresh the editable-package
