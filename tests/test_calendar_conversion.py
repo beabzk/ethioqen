@@ -161,3 +161,33 @@ def test_round_trip_conversion():
         )
         # Should get the original date back
         assert (eth_year, eth_month, eth_day) == (eth_year2, eth_month2, eth_day2)
+
+
+def test_unix_epoch_anchor():
+    """1970-01-01 Gregorian is Tahsas 23, 1962 Ethiopian (JDN 2440588)."""
+    assert convert_gregorian_to_ethiopian(1970, 1, 1) == (1962, 4, 23)
+    assert convert_ethiopian_to_gregorian(1962, 4, 23) == (1970, 1, 1)
+
+
+def test_millennium_anchor():
+    """Meskerem 1, 2000 was 2007-09-12 Gregorian (BBC, truecalendar.com).
+
+    Sept-11 datelines in the press covered the eve (Pagume 6, 1999);
+    New Year began at midnight Tue->Wed (2100GMT Tue).
+    """
+    assert convert_ethiopian_to_gregorian(2000, 1, 1) == (2007, 9, 12)
+    assert convert_gregorian_to_ethiopian(2007, 9, 12) == (2000, 1, 1)
+
+
+def test_recent_enkutatash_anchors():
+    """Enkutatash dates widely reported in the Ethiopian press."""
+    assert convert_ethiopian_to_gregorian(2018, 1, 1) == (2025, 9, 11)
+    assert convert_gregorian_to_ethiopian(2025, 9, 11) == (2018, 1, 1)
+    assert convert_ethiopian_to_gregorian(2019, 1, 1) == (2026, 9, 11)
+    assert convert_gregorian_to_ethiopian(2026, 9, 11) == (2019, 1, 1)
+
+
+def test_ethiopian_epoch_origin():
+    """Meskerem 1, year 1 is 29 Aug AD 8 Julian, i.e. 27 Aug proleptic Gregorian."""
+    assert convert_ethiopian_to_gregorian(1, 1, 1) == (8, 8, 27)
+    assert convert_gregorian_to_ethiopian(8, 8, 27) == (1, 1, 1)
