@@ -23,7 +23,7 @@ def is_gregorian_leap_year(year: int) -> bool:
     return year % 4 == 0 and (year % 100 != 0 or year % 400 == 0)
 
 
-def _ethiopian_to_jdn(year, month, day):
+def _ethiopian_to_jdn(year: int, month: int, day: int) -> int:
     """Convert Ethiopian date to Julian Day Number."""
     if not is_valid_ethiopian_date(year, month, day):
         raise InvalidDateException(f"Invalid Ethiopian date: {year}-{month}-{day}")
@@ -34,12 +34,12 @@ def _ethiopian_to_jdn(year, month, day):
     return ETHIOPIAN_EPOCH + year_days + month_days + day - 1
 
 
-def _year_start_days(year):
+def _year_start_days(year: int) -> int:
     """Days from the epoch to Meskerem 1 of the given Ethiopian year."""
     return year * 365 + year // 4
 
 
-def _jdn_to_ethiopian(jdn):
+def _jdn_to_ethiopian(jdn: int) -> tuple:
     """Convert Julian Day Number to Ethiopian date (integer math only).
 
     Inverts _ethiopian_to_jdn exactly: finds the year whose
@@ -64,7 +64,7 @@ def _jdn_to_ethiopian(jdn):
     return year, month, day
 
 
-def _gregorian_to_jdn(year, month, day):
+def _gregorian_to_jdn(year: int, month: int, day: int) -> int:
     """Convert Gregorian date to Julian Day Number."""
     if month <= 2:
         year -= 1
@@ -77,7 +77,7 @@ def _gregorian_to_jdn(year, month, day):
     return jdn
 
 
-def _jdn_to_gregorian(jdn):
+def _jdn_to_gregorian(jdn: int) -> tuple:
     """Convert Julian Day Number to Gregorian date."""
     y = 4716
     j = 1401

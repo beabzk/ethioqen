@@ -12,9 +12,9 @@ __all__ = ["ethiopian_to_unix", "unix_to_ethiopian"]
 
 
 def ethiopian_to_unix(
-    e_year: int,
-    e_month: int,
-    e_day: int,
+    eth_year: int,
+    eth_month: int,
+    eth_day: int,
     eth_hour: int = 12,
     minute: int = 0,
     is_pm: bool = False,
@@ -24,9 +24,9 @@ def ethiopian_to_unix(
     """Convert Ethiopian date/time to Unix timestamp.
 
     Args:
-        e_year: Ethiopian year.
-        e_month: Ethiopian month (1-13).
-        e_day: Ethiopian day.
+        eth_year: Ethiopian year.
+        eth_month: Ethiopian month (1-13).
+        eth_day: Ethiopian day.
         eth_hour: Hour in Ethiopian 12-hour time (1-12). Defaults to 12.
         minute: Minutes (0-59). Defaults to 0.
         is_pm: Whether the time is PM. Defaults to False.
@@ -46,9 +46,9 @@ def ethiopian_to_unix(
         >>> ethiopian_to_unix(2015, 1, 1, 12, 0, False)
         1662876000
     """
-    if not is_valid_ethiopian_date(e_year, e_month, e_day):
+    if not is_valid_ethiopian_date(eth_year, eth_month, eth_day):
         raise InvalidDateException(
-            f"Invalid Ethiopian date: {e_year}-{e_month}-{e_day}"
+            f"Invalid Ethiopian date: {eth_year}-{eth_month}-{eth_day}"
         )
     if not 0 <= minute <= 59:
         raise InvalidTimeException(f"Invalid minute: {minute}")
@@ -59,7 +59,9 @@ def ethiopian_to_unix(
     hour_24 = eth_to_24h(eth_hour, is_pm)
 
     # Convert to Gregorian and create timestamp
-    g_year, g_month, g_day = convert_ethiopian_to_gregorian(e_year, e_month, e_day)
+    g_year, g_month, g_day = convert_ethiopian_to_gregorian(
+        eth_year, eth_month, eth_day
+    )
     try:
         dt = datetime(
             g_year,
@@ -75,7 +77,7 @@ def ethiopian_to_unix(
         raise InvalidDateException(str(e)) from e
 
 
-def unix_to_ethiopian(timestamp, tz_offset: float = 0) -> tuple:
+def unix_to_ethiopian(timestamp: int | float, tz_offset: float = 0) -> tuple:
     """Convert Unix timestamp to Ethiopian date/time.
 
     Args:
@@ -97,9 +99,11 @@ def unix_to_ethiopian(timestamp, tz_offset: float = 0) -> tuple:
         raise InvalidDateException(f"Invalid timestamp: {timestamp}") from e
 
     # Convert to Ethiopian date
-    e_year, e_month, e_day = convert_gregorian_to_ethiopian(dt.year, dt.month, dt.day)
+    eth_year, eth_month, eth_day = convert_gregorian_to_ethiopian(
+        dt.year, dt.month, dt.day
+    )
 
     # Convert 24-hour time to Ethiopian 12-hour time
     eth_hour, is_pm = h24_to_eth(dt.hour)
 
-    return e_year, e_month, e_day, eth_hour, dt.minute, dt.second, is_pm
+    return eth_year, eth_month, eth_day, eth_hour, dt.minute, dt.second, is_pm
