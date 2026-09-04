@@ -1,0 +1,26 @@
+name: Feature request
+description: Propose a new conversion, API, or improvement
+labels: [enhancement]
+body:
+  - type: textarea
+    id: use-case
+    attributes:
+      label: Use case
+      description: What are you trying to do that the library cannot do today?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed API
+      description: Sketch the function signatures and an example call
+      placeholder: |
+        from ethioqen import ethiopian_holiday
+        ethiopian_holiday(2016, 1, 11)  # -> "Timket"
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Scope notes
+      options:
+        - label: I checked this is not covered by existing converters
+        - label: I am willing to contribute tests for this

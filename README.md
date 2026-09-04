@@ -6,6 +6,7 @@
 
 [![PyPI version](https://badge.fury.io/py/ethioqen.svg)](https://badge.fury.io/py/ethioqen)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![CI](https://github.com/beabzk/ethioqen/actions/workflows/ci.yml/badge.svg)](https://github.com/beabzk/ethioqen/actions/workflows/ci.yml)
 [![Upload Python Package](https://github.com/beabzk/ethioqen/actions/workflows/publish.yml/badge.svg?event=release)](https://github.com/beabzk/ethioqen/actions/workflows/publish.yml)
 
 `ethioqen` is a Python library that provides accurate and efficient conversions between the Ethiopian calendar, the Gregorian calendar, Ethiopian local time (12-hour format), standard 24-hour local time, and Unix timestamps.
@@ -51,7 +52,7 @@ uv sync --all-groups
 ### Calendar Conversions
 
 ```python
-from ethioqen.calendar_conversion import (
+from ethioqen import (
     convert_ethiopian_to_gregorian,
     convert_gregorian_to_ethiopian,
 )
@@ -68,7 +69,7 @@ print(f"{eth_year}-{eth_month}-{eth_day}")  # Output: 2016-7-6
 ### Time Conversions
 
 ```python
-from ethioqen.time_conversion import (
+from ethioqen import (
     convert_to_ethiopian_time,
     convert_from_ethiopian_time,
 )
@@ -85,7 +86,7 @@ print(f"{std_hour:02d}:{std_minute:02d}")  # Output: 14:30
 ### Unix Timestamp Conversions
 
 ```python
-from ethioqen.unix_time_conversion import ethiopian_to_unix, unix_to_ethiopian
+from ethioqen import ethiopian_to_unix, unix_to_ethiopian
 
 # Convert Ethiopian date/time to Unix timestamp (UTC)
 # 1:30 PM Ethiopian time
@@ -101,7 +102,7 @@ print(f"{eth_year}-{eth_month}-{eth_day} {hour}:{minute:02d} {'PM' if is_pm else
 ### Timezone Support
 
 ```python
-from ethioqen.unix_time_conversion import ethiopian_to_unix, unix_to_ethiopian
+from ethioqen import ethiopian_to_unix, unix_to_ethiopian
 
 # Convert with timezone offset (UTC+3 for Ethiopia)
 # 8:30 AM Ethiopian time

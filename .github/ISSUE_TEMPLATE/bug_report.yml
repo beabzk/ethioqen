@@ -1,0 +1,36 @@
+name: Bug report
+description: Report a bug
+labels: [bug]
+body:
+  - type: input
+    id: version
+    attributes:
+      label: ethioqen version
+      description: Output of `pip show ethioqen` or the git commit tested
+      placeholder: 0.3.0
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: Python version and OS
+      placeholder: Python 3.12 on ubuntu 24.04
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Minimal reproducer
+      description: Smallest snippet showing expected vs actual output
+      placeholder: |
+        from ethioqen import convert_gregorian_to_ethiopian
+        print(convert_gregorian_to_ethiopian(2023, 2, 29))
+        # expected: InvalidDateException, actual: ...
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Anything else (tracebacks, references checked)
