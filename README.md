@@ -70,11 +70,11 @@ from ethioqen.time_conversion import (
 )
 
 # Convert standard time (14:30 / 2:30 PM) to Ethiopian time
-eth_hour, eth_minute, is_day = convert_to_ethiopian_time(14, 30)
-print(f"{eth_hour}:{eth_minute} {'AM' if is_day else 'PM'}")  # Output: 8:30 PM
+eth_hour, eth_minute, is_pm = convert_to_ethiopian_time(14, 30)
+print(f"{eth_hour}:{eth_minute} {'PM' if is_pm else 'AM'}")  # Output: 8:30 AM
 
-# Convert Ethiopian time (8:30 PM) to standard time
-std_hour, std_minute = convert_from_ethiopian_time(8, 30, is_am=False)
+# Convert Ethiopian time (8:30 AM) to standard time
+std_hour, std_minute = convert_from_ethiopian_time(8, 30, is_pm=False)
 print(f"{std_hour:02d}:{std_minute:02d}")  # Output: 14:30
 ```
 

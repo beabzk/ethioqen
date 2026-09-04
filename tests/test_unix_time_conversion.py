@@ -2,39 +2,8 @@ from datetime import datetime, timedelta, timezone
 
 import pytest
 
-from ethioqen.exceptions import InvalidDateException
-from ethioqen.unix_time_conversion import (
-    _convert_24h_to_ethiopian,
-    _convert_ethiopian_to_24h,
-    ethiopian_to_unix,
-    unix_to_ethiopian,
-)
-
-
-def test_ethiopian_12h_to_24h_conversion():
-    """Test Ethiopian 12-hour to 24-hour conversion."""
-    # Morning times
-    assert _convert_ethiopian_to_24h(12, False) == 6  # 12 AM = 6:00
-    assert _convert_ethiopian_to_24h(1, False) == 7  # 1 AM = 7:00
-    assert _convert_ethiopian_to_24h(6, False) == 12  # 6 AM = 12:00
-
-    # Afternoon/evening times
-    assert _convert_ethiopian_to_24h(12, True) == 18  # 12 PM = 18:00
-    assert _convert_ethiopian_to_24h(1, True) == 19  # 1 PM = 19:00
-    assert _convert_ethiopian_to_24h(6, True) == 0  # 6 PM = 00:00
-
-
-def test_24h_to_ethiopian_12h_conversion():
-    """Test 24-hour to Ethiopian 12-hour conversion."""
-    # Morning times
-    assert _convert_24h_to_ethiopian(6) == (12, False)  # 6:00 = 12 AM
-    assert _convert_24h_to_ethiopian(7) == (1, False)  # 7:00 = 1 AM
-    assert _convert_24h_to_ethiopian(12) == (6, False)  # 12:00 = 6 AM
-
-    # Afternoon/evening times
-    assert _convert_24h_to_ethiopian(18) == (12, True)  # 18:00 = 12 PM
-    assert _convert_24h_to_ethiopian(19) == (1, True)  # 19:00 = 1 PM
-    assert _convert_24h_to_ethiopian(0) == (6, True)  # 00:00 = 6 PM
+from ethioqen.exceptions import InvalidDateException, InvalidTimeException
+from ethioqen.unix_time_conversion import ethiopian_to_unix, unix_to_ethiopian
 
 
 def test_ethiopian_to_unix_12h_format():
@@ -90,9 +59,9 @@ def test_invalid_ethiopian_dates():
 
 def test_invalid_times():
     """Test error handling for invalid times."""
-    with pytest.raises(InvalidDateException):
+    with pytest.raises(InvalidTimeException):
         ethiopian_to_unix(2015, 1, 1, 13, 0)  # Invalid hour (>12)
-    with pytest.raises(InvalidDateException):
+    with pytest.raises(InvalidTimeException):
         ethiopian_to_unix(2015, 1, 1, 0, 0)  # Invalid hour (<1)
     with pytest.raises(InvalidDateException):
         ethiopian_to_unix(2015, 1, 1, 12, 60)  # Invalid minute

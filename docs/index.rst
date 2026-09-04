@@ -44,8 +44,8 @@ Time Conversion
 
    from ethioqen.time_conversion import convert_to_ethiopian_time
 
-   eth_hour, eth_minute, is_day = convert_to_ethiopian_time(14, 30)
-   print(f"{eth_hour}:{eth_minute} {'AM' if is_day else 'PM'}")  # 8:30 PM
+   eth_hour, eth_minute, is_pm = convert_to_ethiopian_time(14, 30)
+   print(f"{eth_hour}:{eth_minute} {'PM' if is_pm else 'AM'}")  # 8:30 AM
 
 Unix Time Conversion
 ^^^^^^^^^^^^^^^^^

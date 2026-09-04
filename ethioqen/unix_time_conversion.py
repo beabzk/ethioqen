@@ -5,50 +5,8 @@ from .calendar_conversion import (
     convert_gregorian_to_ethiopian,
 )
 from .exceptions import InvalidDateException
+from .time_conversion import eth_to_24h, h24_to_eth
 from .utils import is_valid_ethiopian_date
-
-
-def _convert_ethiopian_to_24h(hour, is_pm):
-    """Convert Ethiopian 12-hour time to 24-hour format.
-
-    In Ethiopian time:
-    - Day starts at 12:00 AM (6:00 AM standard)
-    - 1:00 AM = 7:00 AM standard = 7 in 24h
-    - 12:00 PM = 6:00 PM standard = 18 in 24h
-    - 1:00 PM = 7:00 PM standard = 19 in 24h
-    """
-    if hour < 1 or hour > 12:
-        raise InvalidDateException(f"Invalid Ethiopian hour: {hour}")
-
-    if hour == 12:
-        hour = 0
-
-    if is_pm:
-        hour += 12
-
-    # Add 6 hours to align with standard time
-    hour = (hour + 6) % 24
-    return hour
-
-
-def _convert_24h_to_ethiopian(hour):
-    """Convert 24-hour time to Ethiopian 12-hour format.
-
-    Returns:
-        tuple: (hour in 1-12 format, is_pm boolean)
-    """
-    # Subtract 6 hours to align with Ethiopian time
-    eth_hour = (hour - 6) % 24
-
-    # Convert to 12-hour format
-    is_pm = eth_hour >= 12
-    if is_pm:
-        eth_hour -= 12
-
-    if eth_hour == 0:
-        eth_hour = 12
-
-    return eth_hour, is_pm
 
 
 def ethiopian_to_unix(
@@ -76,7 +34,7 @@ def ethiopian_to_unix(
         raise InvalidDateException(f"Invalid minute: {minute}")
 
     # Convert Ethiopian 12-hour time to 24-hour time
-    hour_24 = _convert_ethiopian_to_24h(eth_hour, is_pm)
+    hour_24 = eth_to_24h(eth_hour, is_pm)
 
     # Convert to Gregorian and create timestamp
     g_year, g_month, g_day = convert_ethiopian_to_gregorian(e_year, e_month, e_day)
@@ -115,6 +73,6 @@ def unix_to_ethiopian(timestamp, tz_offset=0):
     e_year, e_month, e_day = convert_gregorian_to_ethiopian(dt.year, dt.month, dt.day)
 
     # Convert 24-hour time to Ethiopian 12-hour time
-    eth_hour, is_pm = _convert_24h_to_ethiopian(dt.hour)
+    eth_hour, is_pm = h24_to_eth(dt.hour)
 
     return e_year, e_month, e_day, eth_hour, dt.minute, is_pm
