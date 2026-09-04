@@ -1,0 +1,70 @@
+# git-cliff config: release notes from conventional commits.
+# Usage at release time:
+#   uvx git-cliff <prev-tag>..HEAD --tag <new-tag>
+# CHANGELOG.md stays hand-curated; cliff output is the announcement layer.
+
+[changelog]
+header = "# Changelog\n\n"
+body = """
+{% if version %}\
+    ## [{{ version | trim_start_matches(pat="v") }}] - {{ timestamp | date(format="%Y-%m-%d") }}
+{% else %}\
+    ## [unreleased]
+{% endif %}\
+{% for group, commits in commits | group_by(attribute="group") %}
+    ### {{ group | upper_first }}
+    {% for commit in commits %}
+        - {{ commit.message | upper_first }}\
+    {% endfor %}
+{% endfor %}\n
+"""
+trim = true
+render_always = true
+
+[git]
+conventional_commits = true
+filter_unconventional = true
+split_commits = false
+protect_breaking_commits = false
+filter_commits = false
+tag_pattern = "v[0-9]*"
+skip_tags = ""
+ignore_tags = ""
+topo_order = false
+sort_commits = "oldest"
+limit_commits = 100
+
+[[git.commit_parsers]]
+message = "^.*!:"
+group = "Breaking Changes"
+
+[[git.commit_parsers]]
+message = "^feat"
+group = "Features"
+
+[[git.commit_parsers]]
+message = "^fix"
+group = "Bug Fixes"
+
+[[git.commit_parsers]]
+message = "^test"
+group = "Tests"
+skip = true
+
+[[git.commit_parsers]]
+message = "^chore"
+group = "Chores"
+skip = true
+
+[[git.commit_parsers]]
+message = "^docs"
+group = "Documentation"
+skip = true
+
+[[git.commit_parsers]]
+message = "^refactor"
+group = "Refactoring"
+
+[[git.commit_parsers]]
+message = ".*"
+group = "Other"
